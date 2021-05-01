@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//This script will make the objects shootable that it is attached to
+//This script will make the objects shootable
 public class Shootable : MonoBehaviour
 {
     public GameObject destructionPrefab;

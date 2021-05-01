@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-//This script will give more features to player shooting
+//This script will give more features to player's shooting
 public class PlayerShooting : MonoBehaviour
 {
     public GameObject ammoDisplay;

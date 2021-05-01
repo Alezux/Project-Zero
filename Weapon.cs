@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-//This script will give the actions to weapon
+//This script will give the actions to a weapon
 public class Weapon: MonoBehaviour
 {
     public GameObject spawnPoint;
