@@ -14,7 +14,7 @@ public class Bullet : MonoBehaviour
         Invoke("DestroyProjectile", lifeTime);
     }
 
-    //When a bullet enters the shootable area, the targets will respond to the bullet going in their area
+    //When the bullet enters the shootable area, the targets will respond to the bullet going in their area
     void OnTriggerEnter(Collider collider)
     {
         //This will cause one damage to all objects with an enemy tag and will destroy the object when health is 0
