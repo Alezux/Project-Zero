@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Tämä koodi antaa viholliselle elinajan
+//This script will give the enemies health
 public class EnemyHealth : MonoBehaviour
 {
     public GameObject deathSound;
@@ -11,15 +11,14 @@ public class EnemyHealth : MonoBehaviour
     public int health;
     public GameObject ragdollPrefab;
 
-    //Alkaessa vihollinen saa elinajan määrän elinlinjalle
     void Start()
     {
         healthBar.SetMaxHealth(health);
     }
 
-    //Päivittäessä, kun vihollisen elinaika menee nollalle, vihollinen tuhoutuu
     void Update()
     {
+        //When enemies health goes 0, the enemy will get destroyed
         if (health <= 0f)
         {
             deathSound.SetActive(true);
@@ -28,7 +27,7 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-    //Vihollinen ottaa vahinkoa luodista
+    //When calling this function, the enemy will take damage
     public void TakeDamage(int damage)
     {
         health -= damage;

@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-//Tämä koodi antaa ohjemenulle napin palata takaisin menuskeneen
+//This script will give the actions for the instructions menu
 public class InstructionsMenu : MonoBehaviour
 {
-    //Tämä nappi vie takaisin päämenuun
+    //When calling this function, the game will go back to menu scene
     public void ReturnMenu()
     {
         SceneManager.LoadScene("MenuScene");

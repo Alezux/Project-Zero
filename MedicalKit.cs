@@ -2,40 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Tämä esine antaa lääkintäesineelle toiminnat
+//This script will give the actions for the collectable medical kits
 public class MedicalKit : MonoBehaviour
 {
     public PlayerHealth playerHealth;
 
-    //Alkaessa koodi etsii asioita
     void Start()
     {
         playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
 
-        //Jos pelaajan elämä on täysillä, lääkintäesinettä ei voi kerätä
+        //When player's health is full, the player cannot collect medical kits
         if (playerHealth.health == 10)
         {
             this.GetComponent<BoxCollider>().enabled = false;
         }
     }
 
-    //Päivittäessä jos pelaajan elämä on vähentynyt, lääkintäesineen pystyy keräämään
     void Update()
     {
+        //When player has lost health, collecting medical kit will make the player receive one health more
         if (playerHealth.health < 10)
         {
             this.GetComponent<BoxCollider>().enabled = true;
         }
     }
 
-    //Lääkintäesineen alueelle osuessa pelaaja saa lääkintäesineestä lisää elämää, jos elämää on vähentynyt
     void OnTriggerEnter(Collider other)
     {
+        //When player enters the medical kit's area and has lost health, the player will get health from collecting medical kit
         if (other.CompareTag("Player") && playerHealth.health < 10)
         {
+            //Destroys medical kit after collecting
             Destroy(gameObject);
+
+            //Player gets one health more
             playerHealth.health += 1;
-            //playerHealth.healthBar.SetHealth(playerHealth.health);
             this.GetComponent<BoxCollider>().enabled = false;
         }
     }

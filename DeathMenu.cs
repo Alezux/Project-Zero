@@ -4,22 +4,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-//Tämä koodi antaa kuoleman välimenun napille toiminnat
+//This script will give the actions to the death menu, aka game over screen
 public class DeathMenu : MonoBehaviour
 {
-    //Tämä nappi aloittaa pelin alusta
+    //When calling this function, the game will restart
     public void PlayGame()
     {
         SceneManager.LoadScene("ProtoMapWIP");
     }
 
-    //Tämä nappi vie takaisin päämenuun
+    //When calling this function, the game will go to menu scene
     public void ReturnMenu()
     {
         SceneManager.LoadScene("MenuScene");
     }
 
-    //Tämä nappi lopettaa pelin
+    //When calling this function, the game application will close
     public void QuitGame()
     {
         Application.Quit();

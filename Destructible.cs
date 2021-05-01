@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Tämä koodi toimii esineeseen liitettävänä, mistä tulee tuhoutuva, eli räjähtää pommista
+//This script will make an object destructible that it is attached to
 public class Destructible : MonoBehaviour
 {
     public GameObject explosionEffect;
     public int health;
 
-    //Jos tuhottavan esineen elinaika menee nollalle, tuhottava esine räjähtää ja tuhoutuu
     void Update()
     {
+        //When the object's health goes to 0, the object will get destroyed and exploded
         if (health <= 0f)
         {
             GameObject cloneExplosion = Instantiate(explosionEffect, transform.position, transform.rotation);
@@ -20,7 +20,7 @@ public class Destructible : MonoBehaviour
         }
     }
 
-    //Tuhottava ottaa vahinkoa tätä kutsumalla
+    //When calling this function, the object will take damage
     public void TakeDamage(int damage)
     {
         health -= damage;

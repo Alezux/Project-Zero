@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Tämä koodi antaa kranaatin heitolle ominaisuudet
+//This script will make the grenade throwable
 public class GrenadeShoot : MonoBehaviour
 {
     private Camera cam;
@@ -22,7 +22,6 @@ public class GrenadeShoot : MonoBehaviour
     public Animator playerAnim;
     public PickableItems PickableItems;
 
-    //Alkaessa koodi antaa seuraavat arvot ja hakee komponentin
     void Start()
     {
         cam = Camera.main;
@@ -31,38 +30,45 @@ public class GrenadeShoot : MonoBehaviour
         currentAmmo = maxAmmo;
     }
 
-    //Päivittäessä tämä hakee toista funktiota
     void Update()
     {
         LaunchProjectile();
     }
 
-    //Kranaatinheiton aikana kaari ja kohde seuraavat hiirtä, mihin voit heittää kranaatin
+    //When player is carrying the grenade, the features of grenade will follow the mouse location where you can aim the grenade for
     void LaunchProjectile()
     {
+        //Raycast features
         Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(camRay, out hit, 100f, layer))
         {
-            //cursor.SetActive(true);
-            //cursor.transform.position = hit.point + Vector3.up * 0.1f;
             Vector3 vo = CalculateVelocty(hit.point, shootPoint.position, 1f);
             Visualize(vo);
             transform.rotation = Quaternion.LookRotation(vo);
 
-            //Näppäintä painaessa heittää kranaatin
+            //When pressing the button, player will throw grenade
             if (Input.GetButtonDown("Shoot") && Time.time > nextFire)
             {
+                //Animation
                 playerAnim.SetTrigger("ThrowGrenade");
+
+                //Gravity
                 Rigidbody grenade;
+
+                //Instantianting the features and giving velocity
                 grenade = Instantiate(grenadePrefab, shootPoint.position, Quaternion.identity) as Rigidbody;
                 grenade.velocity = vo;
+
+                //This will count when the next grenade can be thrown
                 nextFire = Time.time + fireRate;
+
+                //Grenade loses ammos, aka grenades
                 currentAmmo--;
             }
 
-            //Jos kranaatin ammukset loppuu, kranaatti tuhoutuu
+            //When grenade runs out of ammos, which in this case are multiple grenades, the grenades will disappear after time
             if (currentAmmo <= 0)
             {
                 Destroy(gameObject);
@@ -73,7 +79,7 @@ public class GrenadeShoot : MonoBehaviour
         }
     }
 
-    //Tekee kranaatinheiton viivasta kaaren
+    //This will give the bow that appears when player carries grenade
     void Visualize(Vector3 vo)
     {
         for (int i = 0; i < lineSegment; i++)
@@ -83,7 +89,7 @@ public class GrenadeShoot : MonoBehaviour
         }
     }
 
-    //Antaa kranaatinheiton kaarelle toiminnot ja laskee etäisyydet
+    //This will give the features for the bow when carrying grenade
     Vector3 CalculateVelocty(Vector3 target, Vector3 origin, float time)
     {
         Vector3 distance = target - origin;
@@ -99,7 +105,6 @@ public class GrenadeShoot : MonoBehaviour
         return result;
     }
 
-    //Antaa kranaatinheitolle toiminnot ja laskee etäisyydet
     Vector3 CalculatePosInTime(Vector3 vo, float time)
     {
         Vector3 Vxz = vo;

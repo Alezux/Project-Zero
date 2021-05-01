@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-//Tämä koodi hallitsee pelissä kerättävien esineiden toimintoja
+//This script is controlling the pickable items, which works as an inventory system
 public class PickableItems : MonoBehaviour
 {
     public GameObject[] backpackIcons;
@@ -29,7 +29,6 @@ public class PickableItems : MonoBehaviour
     public bool keyCard2Carrying;
     private float range = 8f;
 
-    //Päivittäessä koodi hakee, avaa ja sulkee asioita
     void Start()
     {
         GrenadeShoot = GetComponentInChildren<GrenadeShoot>();
@@ -45,6 +44,7 @@ public class PickableItems : MonoBehaviour
         removeButtons[6].SetActive(false);
         removeButtons[7].SetActive(false);
 
+        //The codes below work for moving data between scenes, for example when you have key card equipped and you have moved to another scene, the keycard will come with you.
         Scene currentScene = SceneManager.GetActiveScene();
         string sceneName = currentScene.name;
 
@@ -58,24 +58,24 @@ public class PickableItems : MonoBehaviour
             PickWeapon();
         }
 
-        //Kun astut tehtäväkentälle, ase on kädessäsi automaattisesti
         if (sceneName == "ProtoMapWIP")
         {
             PickWeapon();
         }
+
+        //End of lines
     }
 
-    //Päivittäessä koodi antaa pelin esineille kantamisen
     void Update()
     {
-        //Kun painat toimintanappia, koodi kutsuu funktion joka hoitaa kantamisen asiat
+        //When the interaction button is pressed close to pickable items, the player will carry the pickable item
         if (Input.GetButtonDown("Interaction"))
         {
             Pickup();
         }
     }
 
-    //Tätä funktiota kutsumalla pelaaja kantaa asetta
+    //When calling this function, the player will carry weapon. A lot of actions will happen afterwards.
     public void PickWeapon()
     {
         Switch();
@@ -101,7 +101,7 @@ public class PickableItems : MonoBehaviour
         selectionButtons[3].SetActive(false);
     }
 
-    //Tätä funktiota kutsumalla pelaaja kantaa kranaattia
+    //When calling this function, the player will carry grenade. A lot of actions will happen afterwards.
     public void PickGrenade()
     {
         Switch();
@@ -130,7 +130,7 @@ public class PickableItems : MonoBehaviour
         selectionButtons[7].SetActive(false);
     }
 
-    //Tätä funktiota kutsumalla pelaaja kantaa avainkorttia
+    //When calling this function, the player will carry key card. A lot of actions will happen afterwards.
     public void PickKeyCard()
     {
         Switch();
@@ -154,7 +154,7 @@ public class PickableItems : MonoBehaviour
         selectionButtons[11].SetActive(false);
     }
 
-    //Tätä funktiota kutsumalla pelaaja kantaa toista avainkorttia
+    //When calling this function, the player will carry second keycard. A lot of actions will happen afterwards.
     public void PickKeyCard2()
     {
         Switch();
@@ -178,7 +178,7 @@ public class PickableItems : MonoBehaviour
         selectionButtons[15].SetActive(false);
     }
 
-    //Tätä funktiota kutsumalla aseen valintanapit ilmestyvät painaessa hudilla
+    //When calling this function, the weapon's carrying selection buttons will appear on the hud
     public void WeaponCarrySelections()
     {
         if (weaponCarrying == true)
@@ -188,7 +188,7 @@ public class PickableItems : MonoBehaviour
         }
     }
 
-    //Tätä funktiota kutsumalla kranaatin valintanapit ilmestyvät painaessa hudilla
+    //When calling this function, the grenade's carrying selection buttons will appear on the hud
     public void GrenadeCarrySelections()
     {
         if (grenadeCarrying == true)
@@ -198,7 +198,7 @@ public class PickableItems : MonoBehaviour
         }
     }
 
-    //Tätä funktiota kutsumalla avainkortin valintanapit ilmestyvät painaessa hudilla
+    //When calling this function, the keycard's carrying selection buttons will appear on the hud
     public void KeyCardCarrySelections()
     {
         if (keyCardCarrying == true)
@@ -208,7 +208,7 @@ public class PickableItems : MonoBehaviour
         }
     }
 
-    //Tätä funktiota kutsumalla toisen avainkortin valintanapit ilmestyvät painaessa hudilla
+    //When calling this function, the second keycard's carrying selection buttons will appear on the hud
     public void KeyCard2CarrySelections()
     {
         if (keyCard2Carrying == true)
@@ -218,7 +218,7 @@ public class PickableItems : MonoBehaviour
         }
     }
 
-    //Tätä funktiota kutsumalla valintanapit ilmestyvät painaessa inventaariossa
+    //When calling this function, the weapon's selection buttons will appear in the inventory menu
     public void WeaponSelections()
     {
         if (backpackIcons[0].activeInHierarchy)
@@ -228,7 +228,7 @@ public class PickableItems : MonoBehaviour
         }
     }
 
-    //Tätä funktiota kutsumalla valintanapit ilmestyvät painaessa inventaariossa
+    //When calling this function, the grenade's selection buttons will appear in the inventory menu
     public void GrenadeSelections()
     {
         if (backpackIcons[1].activeInHierarchy)
@@ -238,7 +238,7 @@ public class PickableItems : MonoBehaviour
         }
     }
 
-    //Tätä funktiota kutsumalla valintanapit ilmestyvät painaessa inventaariossa
+    //When calling this function, the keycard's selection buttons will appear in the inventory menu
     public void KeyCardSelections()
     {
         if (backpackIcons[2].activeInHierarchy)
@@ -248,7 +248,7 @@ public class PickableItems : MonoBehaviour
         }
     }
 
-    //Tätä funktiota kutsumalla valintanapit ilmestyvät painaessa inventaariossa
+    //When calling this function, the second keycard's selection buttons will appear in the inventory menu
     public void KeyCard2Selections()
     {
         if (backpackIcons[3].activeInHierarchy)
@@ -258,7 +258,7 @@ public class PickableItems : MonoBehaviour
         }
     }
 
-    //Tätä funktiota kutsumalla pelaaja siirtää aseen inventaarioon
+    //When calling this function, the weapon will be moved to inventory from carrying
     public void EquipWeapon()
     {
         carrying = false;
@@ -278,7 +278,7 @@ public class PickableItems : MonoBehaviour
         selectionButtons[1].SetActive(false);
     }
 
-    //Tätä funktiota kutsumalla pelaaja siirtää aseen inventaarioon
+    //When calling this function, the grenade will be moved to inventory from carrying
     public void EquipGrenade()
     {
         carrying = false;
@@ -298,7 +298,7 @@ public class PickableItems : MonoBehaviour
         selectionButtons[5].SetActive(false);
     }
 
-    //Tätä funktiota kutsumalla pelaaja siirtää avainkortin inventaarioon
+    //When calling this function, the keycard will be moved to inventory from carrying
     public void EquipKeyCard()
     {
         carrying = false;
@@ -317,7 +317,7 @@ public class PickableItems : MonoBehaviour
         selectionButtons[9].SetActive(false);
     }
 
-    //Tätä funktiota kutsumalla pelaaja siirtää toisen avainkortin inventaarioon
+    //When calling this function, the second keycard will be moved to inventory from carrying
     public void EquipKeyCard2()
     {
         carrying = false;
@@ -336,7 +336,7 @@ public class PickableItems : MonoBehaviour
         selectionButtons[13].SetActive(false);
     }
 
-    //Tätä funktiota kutsumalla pelaaja pudottaa aseen
+    //When calling this function, the player will drop weapon
     public void DropWeapon()
     {
         carrying = false;
@@ -359,7 +359,7 @@ public class PickableItems : MonoBehaviour
         selectionButtons[3].SetActive(false);
     }
 
-    //Tätä funktiota kutsumalla pelaaja pudottaa kranaatin
+    //When calling this function, the player will drop grenade
     public void DropGrenade()
     {
         carrying = false;
@@ -381,7 +381,7 @@ public class PickableItems : MonoBehaviour
         selectionButtons[7].SetActive(false);
     }
 
-    //Tätä funktiota kutsumalla pelaaja pudottaa avainkortin
+    //When calling this function, the player will drop keycard
     public void DropKeyCard()
     {
         carrying = false;
@@ -402,7 +402,7 @@ public class PickableItems : MonoBehaviour
         selectionButtons[11].SetActive(false);
     }
 
-    //Tätä funktiota kutsumalla pelaaja pudottaa toisen avainkortin
+    //When calling this function, the player will drop second keycard
     public void DropKeyCard2()
     {
         carrying = false;
@@ -423,35 +423,41 @@ public class PickableItems : MonoBehaviour
         selectionButtons[15].SetActive(false);
     }
 
+    //When calling this function, the hud inventory and the inventory menu will switch places with items when clicked
     public void Switch()
     {
+        //Moves weapon from hud inventory to inventory menu
         if (icons[0].activeInHierarchy == true)
         {
             EquipWeapon();
         }
 
+        //Moves grenade from hud inventory to inventory menu
         if (icons[1].activeInHierarchy == true)
         {
             EquipGrenade();
         }
 
+        //Moves keycard from hud inventory to inventory menu
         if (icons[2].activeInHierarchy == true)
         {
             EquipKeyCard();
         }
 
+        //Moves second keycard from hud inventory to inventory menu
         if (icons[3].activeInHierarchy == true)
         {
             EquipKeyCard2();
         }
     }
 
+    //When calling this function, the player will pick up items
     public void Pickup()
     {
-        //Kun et kanna esinettä
+        //When not carrying
         if (carrying == false)
         {
-            //Toimintonäppäintäpainamalla aseen lähistöllä tulee ase pelaajan käteen
+            //When player is close to weapon and presses the interaction button, the weapon will come to player's hand
             if (items[0] != null && weaponCarrying == false)
             {
                 if ((guide.transform.position - items[0].transform.position).sqrMagnitude < range * range)
@@ -463,7 +469,7 @@ public class PickableItems : MonoBehaviour
                 }
             }
 
-            //Toimintonäppäintäpainamalla kranaatin lähistöllä tulee kranaatti pelaajan käteen
+            //When player is close to grenade and presses the interaction button, the grenade will come to player's hand
             if (items[1] != null && grenadeCarrying == false)
             {
                 if ((guide.transform.position - items[1].transform.position).sqrMagnitude < range * range)
@@ -475,7 +481,7 @@ public class PickableItems : MonoBehaviour
                 }
             }
 
-            //Toimintonäppäintäpainamalla avainkortin lähistöllä tulee avainkortti pelaajan käteen
+            //When player is close to keycard and presses the interaction button, the keycard will come to player's hand
             if (items[2] != null && keyCardCarrying == false)
             {
                 if ((guide.transform.position - items[2].transform.position).sqrMagnitude < range * range)
@@ -486,7 +492,7 @@ public class PickableItems : MonoBehaviour
                 }
             }
 
-            //Toimintonäppäintäpainamalla toisen avainkortin lähistöllä tulee toinen avainkortti pelaajan käteen
+            //When player is close to second keycard and presses the interaction button, the second keycard will come to player's hand
             if (items[3] != null && keyCard2Carrying == false)
             {
                 if ((guide.transform.position - items[3].transform.position).sqrMagnitude < range * range)
@@ -498,13 +504,13 @@ public class PickableItems : MonoBehaviour
             }
         }
 
-        //Kun kannat esinettä
+        //When carrying
         if (carrying == true)
         {
-            //Jos kannat asetta ja keräät toisen esineen, toinen esine menee inventaarioon
+            //When carrying weapon and collecting another item, another item goes to inventory
             if (weaponCarrying == true && items[0] != null)
             {
-                //Asetta kantaessa jos valitset kranaatin, kranaatti menee inventaarioon
+                //When carrying weapon and collecting grenade, grenade goes to inventory
                 if (items[1] != null)
                 {
                     if ((guide.transform.position - items[1].transform.position).sqrMagnitude < range * range)
@@ -515,7 +521,7 @@ public class PickableItems : MonoBehaviour
                     }
                 }
 
-                //Asetta kantaessa jos valitset avainkortin, avainkortti menee inventaarioon
+                //When carrying weapon and collecting keycard, keycard goes to inventory
                 if (items[2] != null)
                 {
                     if ((guide.transform.position - items[2].transform.position).sqrMagnitude < range * range)
@@ -526,7 +532,7 @@ public class PickableItems : MonoBehaviour
                     }
                 }
 
-                //Asetta kantaessa jos valitset toisen avainkortin, toinen avainkortti menee inventaarioon
+                //When carrying weapon and collecting second keycard, second keycard goes to inventory
                 if (items[3] != null)
                 {
                     if ((guide.transform.position - items[3].transform.position).sqrMagnitude < range * range)
@@ -538,10 +544,10 @@ public class PickableItems : MonoBehaviour
                 }
             }
 
-            //Jos kannat kranaattia ja keräät toisen esineen, toinen esine menee inventaarioon
+            //When carrying grenade and collecting another item, another item goes to inventory
             if (grenadeCarrying == true && items[1] != null)
             {
-                //Kranaattia kantaessa jos valitset aseen, ase menee inventaarioon
+                //When carrying grenade and collecting weapon, weapon goes to inventory
                 if (items[0] != null)
                 {
                     if ((guide.transform.position - items[0].transform.position).sqrMagnitude < range * range)
@@ -552,7 +558,7 @@ public class PickableItems : MonoBehaviour
                     }
                 }
 
-                //Kranaattia kantaessa jos valitset avainkortin, avainkortti menee inventaarioon
+                //When carrying grenade and collecting keycard, keycard goes to inventory
                 if (items[2] != null)
                 {
                     if ((guide.transform.position - items[2].transform.position).sqrMagnitude < range * range)
@@ -563,7 +569,7 @@ public class PickableItems : MonoBehaviour
                     }
                 }
 
-                //Kranaattia kantaessa jos valitset toisen avainkortin, toinen avainkortti menee inventaarioon
+                //When carrying grenade and collecting second keycard, second keycard goes to inventory
                 if (items[3] != null)
                 {
                     if ((guide.transform.position - items[3].transform.position).sqrMagnitude < range * range)
@@ -575,10 +581,10 @@ public class PickableItems : MonoBehaviour
                 }
             }
 
-            //Jos kannat avainkorttia ja keräät toisen esineen, toinen esine menee inventaarioon
+            //When carrying keycard and collecting another item, another item goes to inventory
             if (keyCardCarrying == true && items[2] != null)
             {
-                //Avainkorttia kantaessa jos valitset aseen, ase menee inventaarioon
+                //When carrying keycard and collecting weapon, weapon goes to inventory
                 if (items[0] != null)
                 {
                     if ((guide.transform.position - items[0].transform.position).sqrMagnitude < range * range)
@@ -589,7 +595,7 @@ public class PickableItems : MonoBehaviour
                     }
                 }
 
-                //Avainkorttia kantaessa jos valitset kranaatin, kranaatti menee inventaarioon
+                //When carrying keycard and collecting grenade, grenade goes to inventory
                 if (items[1] != null)
                 {
                     if ((guide.transform.position - items[1].transform.position).sqrMagnitude < range * range)
@@ -600,7 +606,7 @@ public class PickableItems : MonoBehaviour
                     }
                 }
 
-                //Avainkorttia kantaessa jos valitset toisen avainkortin, toinen avainkortti menee inventaarioon
+                //When carrying keycard and collecting second keycard, second keycard goes to inventory
                 if (items[3] != null)
                 {
                     if ((guide.transform.position - items[3].transform.position).sqrMagnitude < range * range)
@@ -612,10 +618,10 @@ public class PickableItems : MonoBehaviour
                 }
             }
 
-            //Jos kannat toista avainkorttia ja keräät toisen esineen, toinen esine menee inventaarioon
+            //When carrying second keycard and collecting another item, another item goes to inventory
             if (keyCard2Carrying == true && items[3] != null)
             {
-                //Toista avainkorttia kantaessa jos valitset aseen, ase menee inventaarioon
+                //When carrying second keycard and collecting weapon, weapon goes to inventory
                 if (items[0] != null)
                 {
                     if ((guide.transform.position - items[0].transform.position).sqrMagnitude < range * range)
@@ -626,7 +632,7 @@ public class PickableItems : MonoBehaviour
                     }
                 }
 
-                //Toista avainkorttia kantaessa jos valitset kranaatin, kranaatti menee inventaarioon
+                //When carrying second keycard and collecting grenade, grenade goes to inventory
                 if (items[1] != null)
                 {
                     if ((guide.transform.position - items[1].transform.position).sqrMagnitude < range * range)
@@ -637,7 +643,7 @@ public class PickableItems : MonoBehaviour
                     }
                 }
 
-                //Toista avainkorttia kantaessa jos valitset avainkortin, avainkortti menee inventaarioon
+                //When carrying second keycard and collecting keycard, keycard goes to inventory
                 if (items[2] != null)
                 {
                     if ((guide.transform.position - items[2].transform.position).sqrMagnitude < range * range)
@@ -649,7 +655,7 @@ public class PickableItems : MonoBehaviour
                 }
             }
 
-            //Jos kranaatti on tuhoutunut, et kanna esinettä
+            //When grenade is destroyed, every feature of grenade will get destroyed
             if (items[1] == null)
             {
                 carrying = false;
@@ -664,7 +670,7 @@ public class PickableItems : MonoBehaviour
                 selectionButtons[7].SetActive(false);
             }
 
-            //Jos avainkortti on tuhoutunut, et kanna esinettä
+            //When keycard is destroyed, every feature and action of keycard will get destroyed
             if (items[2] == null)
             {
                 carrying = false;
@@ -679,7 +685,7 @@ public class PickableItems : MonoBehaviour
                 selectionButtons[11].SetActive(false);
             }
 
-            //Jos toinen avainkortti on tuhoutunut, et kanna esinettä
+            //When second keycard is destroyed, every feature and action of second keycard will get destroyed
             if (items[3] == null)
             {
                 carrying = false;

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-//Tämä koodi on dialogisysteemin pääkoodi, mikä vastaanottaa toisesta koodista toimintoja
+//This script is the one that holds the dialogue system together
 namespace DialogueSystem
 {
     public class DialogueHolder : MonoBehaviour
@@ -10,16 +10,14 @@ namespace DialogueSystem
         public bool dialogueFinished;
         public PickableItems pickableItems;
 
-        //Herätessä käynnistää dialogisysteemin
         public void OnEnable()
         {
             StartCoroutine(dialogueSequence());
         }
 
-        //Aloittaa dialogin toiminnan
         public IEnumerator dialogueSequence()
         {
-            //Jos dialogi ei ole päättynyt, dialogi jatkaa toimintaa
+            //As long as the dialogue is not finished, the code will loop the dialogue
             if (!dialogueFinished)
             {
                 for (int i = 0; i < transform.childCount - 1; i++)
@@ -30,7 +28,7 @@ namespace DialogueSystem
                 }
             }
 
-            //Jos dialogi on päättynyt, voit vaihtaa seuraavaan dialogiin
+            //When dialogue has finished, the user can move to the next dialogue or close the dialogues
             else
             {
                 int index = transform.childCount - 1;
@@ -39,12 +37,12 @@ namespace DialogueSystem
                 yield return new WaitUntil(() => transform.GetChild(index).GetComponent<DialogueLine>().finished);
             }
 
-            //player.GetComponent<PlayerMovement>().enabled = true;
+            //Turns off the dialogues
             dialogueFinished = true;
             gameObject.SetActive(false);
         }
 
-        //Sulkee dialogin
+        //When calling this function, the dialogues will get deactivated
         public void Deactivate()
         {
             for (int i = 0; i < transform.childCount; i++)

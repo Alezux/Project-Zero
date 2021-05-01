@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Tämä koodi antaa räjähdetynnyrille toiminnat
+//This script will give the actions for explosive barrel gameobjects
 public class Barrel : MonoBehaviour
 {
     public GameObject explosionEffect;
@@ -11,7 +11,7 @@ public class Barrel : MonoBehaviour
     public float radius;
     public int damage;
 
-    //Jos tuhottavan esineen elinaika menee nollalle, tuhottava esine tuhoutuu
+    //When the barrel's health goes 0, the object will get destroyed, in this case it will explode as well
     void Update()
     {
         if (health <= 0f)
@@ -20,19 +20,19 @@ public class Barrel : MonoBehaviour
         }
     }
 
-    //Tuhottava ottaa vahinkoa tätä kutsumalla
+    //When calling this function, the barrel will take damage
     public void TakeDamage(int damage)
     {
         health -= damage;
     }
 
-    //Tämä funktio antaa räjähdyksen
+    //When calling this function, the barrel will explode and get destroyed
     void Explode()
     {
         GameObject cloneExplosion = Instantiate(explosionEffect, transform.position, transform.rotation);
         Collider[] collidersToDestroy = Physics.OverlapSphere(transform.position, radius);
 
-        //Hakee lähistöllä olevia esineitä, joihin voi aiheuttaa vahinkoa
+        //This will reach all the objects that are near the barrel that could take damage from barrel's explosion
         foreach (Collider nearbyObject in collidersToDestroy)
         {
             Destructible dest = nearbyObject.GetComponent<Destructible>();
@@ -41,53 +41,52 @@ public class Barrel : MonoBehaviour
             PlayerHealth player = nearbyObject.GetComponent<PlayerHealth>();
             Shootable shootable = nearbyObject.GetComponent<Shootable>();
 
-            //Tuhottava esine ottaa vahinkoa
+            //The rest of all objects in the game will take damage when they are destroyable
             if (dest != null)
             {
                 dest.TakeDamage(damage);
             }
 
-            //Vihollinen ottaa vahinkoa
+            //The enemies will take damage
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
             }
 
-            //Räjähdetynnyri ottaa vahinkoa
+            //The other barrels will take damage
             if (barrel != null)
             {
                 barrel.TakeDamage(damage);
             }
 
-            //Pelaaja ottaa vahinkoa
+            //The player will take damage
             if (player != null)
             {
                 player.TakeDamage(damage);
             }
 
-            //Laatikot ottaa vahinkoa
+            //The shootable objects will take damage, in this case they are boxes
             if (shootable != null)
             {
                 shootable.TakeDamage(damage);
             }
         }
 
-        //Valitsee colliderit
         Collider[] collidersToMove = Physics.OverlapSphere(transform.position, radius);
 
-        //Hakee lähistöllä olevia esineitä, joita voi siirtää
+        //This will reach the objects nearby that could be moved, which means that when the barrel exploses close to them, they will move a little
         foreach (Collider nearbyObject in collidersToMove)
         {
             Rigidbody rb = nearbyObject.GetComponent<Rigidbody>();
 
-            //Tasapainoiset esineet ottaa siirtovoiman vastaan
+            //The objects will response to the gravity force
             if (rb != null)
             {
                 rb.AddExplosionForce(force, transform.position, radius);
             }
         }
 
-        //Tuhoaa objektin ja räjähdykset
+        //This will destroy the object when everything has happened in the script below
         Destroy(gameObject);
         Destroy(cloneExplosion, 2);
     }

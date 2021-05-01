@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-//Tämä koodi antaa pelaajalle liikkumisen, pyörimisen ja kyykyn
+//This script will give player movement, rotation and crouch
 public class PlayerMovement : MonoBehaviour
 {
     CapsuleCollider playerCollider;
@@ -22,8 +22,6 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 worldPosition;
     public Vector3 movementDirection;
 
-
-    //Alkaessa koodi hakee komponentteja
     void Start()
     {
         playerCollider = GetComponent<CapsuleCollider>();
@@ -34,7 +32,6 @@ public class PlayerMovement : MonoBehaviour
         isMoving = false;
     }
 
-    //Päivittäessä pelaajaa voi liikua
     void FixedUpdate()
     {
         CharacterController controller = GetComponent<CharacterController>();
@@ -42,28 +39,27 @@ public class PlayerMovement : MonoBehaviour
         moveDirection = transform.TransformDirection(moveDirection);
         moveDirection *= speed;
 
-        //Toimintonäppäintä painamalla pohjassa pelaaja menee kyykkyyn
+        //When holding ctrl button, player will crouch
         if (Input.GetKey(KeyCode.LeftControl))
         {
             Crouch();
             isCrouching = true;
         }
 
-        //Toimintonäppäimen päästäminen kyykystä palauttaa pelaajan seisomaan
+        //When letting off ctrl button, player will stand again
         else
         {
             GoUp();
             isCrouching = false;
         }
 
-        //Liikkumiseen liittyviä toimintoja
         moveDirection.y -= gravity * Time.deltaTime;
         controller.Move(moveDirection * Time.deltaTime);
     }
 
-    //Päivittäessä koodi hakee funktion
     private void Update()
-    { 
+    {
+        //Player will move, get gravity and rotation towards mouse
         Move();
         Plane plane = new Plane(Vector3.up, 0);
         float distance;
@@ -77,6 +73,8 @@ public class PlayerMovement : MonoBehaviour
         Vector3 vectorTomousepoint = worldPosition - transform.position;
         float angle = Vector3.SignedAngle(vectorTomousepoint, movementDirection, Vector3.up);
 
+        //All codes below are working within the direction where player is moving and where the player is pointing at.
+        //For example when player is moving backwards and is directing to straight. These actions applies to crouching as well.
         if (angle >= -70f && angle <= 70f && isMoving)
         {
             anim.SetBool("isRunningForward", true);
@@ -101,6 +99,7 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool("isStrafingRight", false);
             anim.SetBool("isRunningForward", false);
         }
+
         if (angle >= 110f && angle <= 180f && isMoving)
         {
             anim.SetBool("isRunningBackward", true);
@@ -136,17 +135,18 @@ public class PlayerMovement : MonoBehaviour
         }
 
         transform.rotation = Quaternion.identity;
+
+        //End of lines
     }
 
-    //Tätä funktiota kutsumalla saa pelaajan kyykkyyn, laskee pelaajan pituuden
+    //When calling this function, player will crouch
     void Crouch()
     {
         playerCollider.height = reducedHeight;
         anim.SetBool("isCrouching", true);
-
     }
 
-    //Tätä funktiota kutsumalla saa pelaajan pituuden ennalleen
+    //When calling this function, player will stand
     void GoUp()
     {
         playerCollider.height = originalHeight;
@@ -154,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
         speed = 20f;
     }
 
-    //Tätä funktiota kutsumalla saa pelaajan liikkumisen ja animaation toimimaan
+    //When calling this function, player will get movement
     public void Move()
     {
         movementDirection = Vector3.zero;
@@ -163,22 +163,26 @@ public class PlayerMovement : MonoBehaviour
         movementDirection.x += horizontalMove;
         movementDirection.z += verticalMove;
 
+        //When player is not idle, player will get movement
         if (verticalMove != 0 || horizontalMove != 0)
         {
             isMoving = true;
         }
 
+        //When player is idle, player wont move
         else
         {
             isMoving = false;
         }
 
+        //When player is crouching and moving, the player will move while crouching
         if (isCrouching && isMoving)
         {
             anim.SetBool("isCrouching", true);
         }
     }
 
+    //When calling this function, player will get step sounds when moving
     void PlayStepSound()
     {
         if (isMoving)

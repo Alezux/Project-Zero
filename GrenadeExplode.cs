@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//Tämä koodi saa kranaatin räjähtämään ja aiheuttamaan vahinkoa
+//This script will give the explosion to a grenade when it is thrown
 public class GrenadeExplode : MonoBehaviour
 {
     public bool hasExploded = false;
@@ -14,19 +14,18 @@ public class GrenadeExplode : MonoBehaviour
     public GameObject explosionEffect;
     public int damage;
 
-    //Alkaessa koodi antaa kranaatille elinajan ja räjähdykselle viiveen heittäessä
     void Start()
     {
         countdown = delay;
         Invoke("Explode", lifeTime);
     }
 
-    //Päivittäessä kranaatti räjähtää viiveen jälkeen
     void Update()
     {
+        //When the grenade is thrown, after certain time it will explode
         countdown -= Time.deltaTime;
 
-        //Kun viive on ohi, tapahtuu räjähdys
+        //When time is over, the greande exploses
         if (countdown <= 0f && !hasExploded)
         {
             Explode();
@@ -34,54 +33,53 @@ public class GrenadeExplode : MonoBehaviour
         }
     }
 
-    //Kranaatin räjähtäessä kranaatti tuhoutuu ja aiheuttaa tietyille esineille
+    //When calling this function, the grenade will explode
     void Explode()
     {
         Instantiate(explosionEffect, transform.position, transform.rotation);
         Collider[] collidersToDestroy = Physics.OverlapSphere(transform.position, radius);
 
-        //Hakee lähistöllä olevia esineitä, joihin voi aiheuttaa vahinkoa
+        //This will reach all the objects that are near the grenade explosion that could take damage from grenade's explosion
         foreach (Collider nearbyObject in collidersToDestroy)
         {
             Destructible dest = nearbyObject.GetComponent<Destructible>();
             Barrel barrel = nearbyObject.GetComponent<Barrel>();
             EnemyHealth enemy = nearbyObject.GetComponent<EnemyHealth>();
 
-            //Tuhottava esine ottaa vahinkoa
+            //The destructible will take damage
             if (dest != null)
             {
                 dest.TakeDamage(damage);
             }
 
-            //Räjähdetynnyri ottaa vahinkoa
+            //The barrels will take damage
             if (barrel != null)
             {
                 barrel.TakeDamage(damage);
             }
 
-            //Vihollinen ottaa vahinkoa
+            //The enemies will take damage
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
             }
         }
 
-        //Valitsee colliderit
         Collider[] collidersToMove = Physics.OverlapSphere(transform.position, radius);
 
-        //Hakee lähistöllä olevia esineitä, joita voi siirtää
+        //This will reach the objects nearby that could be moved, which means that when the barrel exploses close to them, they will move a little
         foreach (Collider nearbyObject in collidersToMove)
         {
             Rigidbody rb = nearbyObject.GetComponent<Rigidbody>();
 
-            //Tasapainoiset esineet ottaa siirtovoiman vastaan
+            //The objects will response to the gravity force
             if (rb != null)
             {
                 rb.AddExplosionForce(force, transform.position, radius);
             }
         }
 
-        //Tuhoaa objektin
+        //At the last grenade will get destroyed
         Destroy(gameObject);
     }
 }

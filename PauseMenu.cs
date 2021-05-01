@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-//Tämä koodi antaa paussimenulle toimivat napit
+//This script will give actions for the pause menu
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenu;
     public GameObject uiDisabled;
 
-    //Tämä nappi avaa paussimenun ja pysäyttää pelin
+    //When calling this button, the game will go to pause menu
     public void Pause()
     {
         pauseMenu.SetActive(true);
@@ -18,7 +18,7 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 0;
     }
 
-    //Tämä nappi palaa peliin
+    //When calling this function, the game will exit pause menu
     public void ResumeGame()
     {
         pauseMenu.SetActive(false);
@@ -26,14 +26,14 @@ public class PauseMenu : MonoBehaviour
         uiDisabled.SetActive(true);
     }
 
-    //Tämä nappi vie päämenuun
+    //When calling this function, the game goes back to menu scene
     public void GoToMenu()
     {
         SceneManager.LoadScene("MenuScene");
         Time.timeScale = 1;
     }
 
-    //Tämä nappi lopettaa pelin
+    //When calling this function, the game will close
     public void QuitGame()
     {
         Application.Quit();

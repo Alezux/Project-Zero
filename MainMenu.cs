@@ -4,29 +4,30 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-//Tämä koodi antaa menuskenelle toimivat napit
+//This script will give the actions for the main menu scene
 public class MainMenu : MonoBehaviour
 {
     public GameObject instructionsMenu;
     
-    //Tämä nappi aloittaa pelin
+    //When calling this function, the game will start
     public void PlayGame()
     {
         SceneManager.LoadScene("middle_start");
     }
 
+    //When calling this function, the instructions menu goes off
     public void BackToMainMenu()
     {
         instructionsMenu.SetActive(false);
     }
 
-    //Tämä nappi avaa ohjemenun
+    //When calling this function, the instructions menu goes on
     public void Instructions()
     {
         instructionsMenu.SetActive(true);
     }
 
-    //Tämä nappi lopettaa pelin
+    //When calling this function, the game application wil close
     public void QuitGame()
     {
         Application.Quit();

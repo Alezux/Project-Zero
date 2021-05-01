@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-//Tämä koodi antaa pelaajalle elämän ja kuoleman
+//This script will give the health for the player
 public class PlayerHealth : MonoBehaviour
 {
     public int health;
@@ -14,15 +14,14 @@ public class PlayerHealth : MonoBehaviour
     public GameObject deathMenu;
     public GameObject backgroundMusic;
 
-    //Alkaessa pelaajalle asennetaan elämä täysille
     void Start()
     {
         charcontr = GetComponent<CharacterController>();
     }
 
-    //Päivittäessä kun pelaajan vahinko menee nollalle, pelaaja kuolee
     void Update()
     {
+        //When player's goes to 0, the player will die and game will be over
         if (health <= 0)
         {
             Instantiate(ragdollPrefab, transform.position, protodude.transform.rotation);
@@ -32,16 +31,15 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    //Pelaaja ottaa vahinkoa vihollisilta tätä funktiota kutsumalla
+    //Player will take damage when calling this function
     public void TakeDamage(int damage)
     {
         health -= damage;
-        //healthBar.SetHealth(health);
     }
 
-    //Pelaajaan osuessa vihollisen ampuma luoti tekee yhden vahingon
     private void OnTriggerEnter(Collider other)
     {
+        //When enemies shoot player, the player will receive one damage when enemies bullet hit player
         if (other.gameObject.CompareTag("ProjectileEnemy"))
         {
             TakeDamage(1);

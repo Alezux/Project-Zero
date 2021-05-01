@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-//Tämä koodi on dialogisysteemin pääkoodi, mikä vastaanottaa toisesta koodista toimintoja
+//This script works for the text lines in the dialogue system
 namespace DialogueSystem
 {
     public class DialogueLine : DialogueBaseClass
@@ -12,9 +12,6 @@ namespace DialogueSystem
 
         [Header("Text Options")]
         [SerializeField] public string input;
-        /*[SerializeField] private Color textColor;
-        [SerializeField] private Font textFont;*/
-
         [Header("Time parameters")]
         [SerializeField] public float delay;
         [SerializeField] public float delayBetweenLines;
@@ -25,12 +22,14 @@ namespace DialogueSystem
         {
             if (Input.GetMouseButtonDown(0))
             {
+                //When user does not skip the dialogues, the dialogue will type automatically until all text is on the dialogue
                 if (textHolder.text != input)
                 {
                     StopCoroutine(lineAppear);
                     textHolder.text = input;
                 }
 
+                //When clicking mouse button while the dialogue is going on, the dialogue's automatic typing can be skipped
                 else
                 {
                     finished = true;
@@ -38,14 +37,15 @@ namespace DialogueSystem
             }
         }
 
-        //Etsii pelistä tekstin ja syöttää sen aloittaessa
+        //When calling this function, the lines will appear
         public void OnEnable()
         {
             ResetLine();
-            lineAppear = WriteText(input, textHolder, delay, delayBetweenLines/*, textColor, textFont*/);
+            lineAppear = WriteText(input, textHolder, delay, delayBetweenLines);
             StartCoroutine(lineAppear);
         }
 
+        //When calling this function, the lines will reset
         public void ResetLine()
         {
             textHolder = GetComponent<Text>();
